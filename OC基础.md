@@ -1425,7 +1425,117 @@ struct {
 
 ## 5.指针
 
+* `*` 间接寻址运算符
+* `&` 地址运算符
+
+使用`*`号声明指针变量，用`&`符号来获取变量的指针。例如：
+
+```objective-c
+int count = 10;
+int *intPtr;
+intPtr = &count;
+```
+
+在将指针设置指向一此值之前是，指针的值是没有意义的。
+
+通过间接寻址运算符获取指针变量的值和赋值：
+
+```objective-c
+void exchange (int *point1, int *point2) {
+  int temp;
+  temp = *point1;
+  *point1 = *point2;
+  *point2 = temp;
+}
+```
 
 
 
+数组指针：
+
+```objective-c
+int values[100];
+int *valuesPtr = &values[0];
+//间接寻址values[3]
+*(valuesPtr + 3) = 20;
+```
+
+```objective-c
+//求整数数组前n个整数值的和
+int arraySum (int array[], int n){
+  int sum = 0,*ptr;
+  int *arrayEnd = array + n;
+  //ptr = array 相当于 ptr = &array[0]
+  for (ptr = array; ptr < arrayEnd; ++ptr){
+    sum += *ptr;
+  }
+  return sum;
+}
+```
+
+
+
+对象数组指针：
+
+```objective-c
+Fraction *fracts[100];
+
+Fraction **fractPtr = fracts;//指向fracts[0]里的对象
+```
+
+
+
+字符串指针：
+
+```objective-c
+//复制字符串
+void copyString (char *to, char *from){
+  for (; *from != '\0'; ++from, ++to){
+    *to = *from;
+  }
+  *to = '\0';
+}
+```
+
+指针函数：
+
+```objective-c
+int lookup(void);
+int (*fnPtr)(void);
+fnPtr = lookup;
+int entry = fnPtr();
+```
+
+指针常量：
+
+指针及其所指向的内容都不可变。
+
+```objective-c
+//指向已知类型
+const T *
+//指向未知类型
+const void *
+```
+
+指针变量：
+
+指针及其所指向的内容均可变。
+
+```objective-c
+//指向已知类型
+T *
+//指向未知类型
+void *
+```
+
+
+
+Swift与OC指针对比：
+
+| Swift                   | OC           | 说明                 |
+| ----------------------- | ------------ | -------------------- |
+| UnsafePointer<T>        | const T *    | 指针常量，已知类型。 |
+| UnsafeMutablePointer<T> | T *          | 指针变量，已知类型。 |
+| UnsafeRawPointer        | const void * | 指针常量，未知类型。 |
+| UnsafeMutableRawPointer | void *       | 指针变量，未知类型。 |
 
