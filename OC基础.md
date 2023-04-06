@@ -17,6 +17,9 @@
 | unsigned long int      | %lu、%lx、%lo               |   |
 | long long int          | %lli、%llx、&llo            |   |
 | unsigned long long int | %llu、%llx、%llo            |   |
+
+| 类型                   | NSLog字符                   | 描述|
+| ---------------------- | --------------------------- |   |
 | float | %f、%e、%g、%a |   |
 | double | %f、%e、%g、%a |   |
 | long double | %f、%e、%g、%a |   |

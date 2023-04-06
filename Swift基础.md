@@ -24,7 +24,6 @@
 | Bool      |        | true和false                       |                                              |
 | Character |        |                                   | 字符指的是单个字母，例如：`C`                |
 | String    |        |                                   | 字符串是字符的序列集合，例如：`Hello World!` |
-|           |        |                                   |                                              |
 
 
 
