@@ -18,14 +18,14 @@
 | long long int          | %lli、%llx、&llo            |         |
 | unsigned long long int | %llu、%llx、%llo            |         |
 
+| 类型        | NSLog字符      | 描述                             |
+| ----------- | -------------- | -------------------------------- |
+| float       | %f、%e、%g、%a |                                  |
+| double      | %f、%e、%g、%a |                                  |
+| long double | %f、%e、%g、%a |                                  |
+| id          | %p             | id数据类型可以存储任何类型的对象 |
 
 
-| 类型                   | NSLog字符                   | 描述|
-| ---------------------- | --------------------------- |   |
-| float | %f、%e、%g、%a |   |
-| double | %f、%e、%g、%a |   |
-| long double | %f、%e、%g、%a |   |
-| id | %p | id数据类型可以存储任何类型的对象 |
 
 ## 2.对象引用类型
 
