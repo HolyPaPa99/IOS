@@ -842,21 +842,235 @@ another(addition: sum, a: 10, b: 20)
 
 # 十一、闭包
 
+闭包(Closures)是自包含的功能代码块，可以在代码中使用或者用来作为参数传值。Swift 中的闭包与 C 和 Objective-C 中的代码块（blocks）以及其他一些编程语言中的 匿名函数比较相似。Swift中的闭包有很多优化的地方:
+
+* 根据上下文推断参数和返回值类型
+* 从单行表达式闭包中隐式返回（也就是闭包体只有一行代码，可以省略return）
+* 可以使用简化参数名，如$0, $1(从0开始，表示第i个参数...)
+* 提供了尾随闭包语法(Trailing closure syntax)
+
+函数和闭包都是引用类型。无论您将函数/闭包赋值给一个常量还是变量，实际上都是将常量/变量的值设置为对应函数/闭包的引用。这也意味着如果您将闭包赋值给了两个不同的常量/变量，两个值都会指向同一个闭包。
+
+## 1.闭包的写法
+
+语法格式：
+
+```swift
+{(parameters) -> return type in
+   statements
+}
+```
+
+```swift
+import Cocoa
+
+//无参数无返回值闭包写法
+let studname = { print("Swift 闭包实例。") }
+studname()
+
+//带参数和返回值闭包常规写法
+let divide = {(val1: Int, val2: Int) -> Int in 
+   return val1 / val2 
+}
+let result = divide(200, 20)
+print (result)
+
+//使用参数名称缩写和隐式返回值的写法
+let names = ["AT", "AE", "D", "S", "BE"]
+var reversed = names.sorted( by: { $0 > $1 } )
+print(reversed)
+
+//运算符函数自动推断写法
+let names = ["AT", "AE", "D", "S", "BE"]
+var reversed = names.sorted(by: >)
+print(reversed)
+
+
+```
+
+## 2.尾随闭包
+
+尾随闭包是一个书写在函数括号之后的闭包表达式，函数支持将其作为最后一个参数调用。
+
+```swift
+func someFunctionThatTakesAClosure(closure: () -> Void) {
+    // 函数体部分
+}
+
+// 以下是不使用尾随闭包进行函数调用
+someFunctionThatTakesAClosure({
+    // 闭包主体部分
+})
+
+// 以下是使用尾随闭包进行函数调用
+someFunctionThatTakesAClosure() {
+  // 闭包主体部分
+}
+```
+
+```swift
+import Cocoa
+
+let names = ["AT", "AE", "D", "S", "BE"]
+
+//尾随闭包
+var reversed = names.sorted() { $0 > $1 }
+print(reversed)
+```
+
+## 3.捕获值
+
+1. 闭包可以在其定义的上下文中捕获常量或变量。即使定义这些常量和变量的原域已经不存在，闭包仍然可以在闭包函数体内引用和修改这些值。
+
+2. Swift最简单的闭包形式是嵌套函数，也就是定义在其他函数的函数体内的函数。嵌套函数可以捕获其外部函数所有的参数以及定义的常量和变量。
+
+3. ```swift
+   import Cocoa
+   
+   func makeIncrementor(forIncrement amount: Int) -> () -> Int {
+       var runningTotal = 0
+       func incrementor() -> Int {
+           runningTotal += amount
+           return runningTotal
+       }
+       return incrementor
+   }
+   
+   let incrementByTen = makeIncrementor(forIncrement: 10)
+   
+   // 返回的值为10
+   print(incrementByTen())
+   
+   // 返回的值为20
+   print(incrementByTen())
+   
+   // 返回的值为30
+   print(incrementByTen())
+   ```
+
+## 4.逃逸闭包
+
+当闭包作为一个实际参数传递给一个函数的时候，并且是在函数返回之后调用，我们就说这个闭包逃逸了。当我们声明一个接受闭包作为形式参数的函数时，你可以在形式参数前写 `@escaping` 来明确闭包是允许逃逸的。不需要在函数结束前被调用，可以等到特定时机时才被调用。
+
+```swift
+class Closure{
+    var handle: ((Int) -> Void)?
+
+    func test(_ a: Int, handler: @escaping (Int) -> Void) {
+        self.handle = handler
+    }
+}
+```
 
 
 
+## 5.自动闭包
+
+* 自动闭包是一种自动创建的闭包，用于包装传递给函数作为参数的表达式。
+
+* 这种闭包不接受任何参数，当它被调用的时候，会返回被包装在其中的表达式的值。
+
+* 这种便利语法让你能够省略闭包的花括号，用一个普通的表达式来代替显式的闭包。
+
+* 自动闭包让你能够延迟求值，因为直到你调用这个闭包，代码段才会被执行。
+
+* 延迟求值对于那些有副作用（Side Effect）和高计算成本的代码来说是很有益处的，因为它使得你能控制代码的执行时机。
+
+通过将参数标记为 `@autoclosure` 来接收一个自动闭包。
+
+```swift
+// serve(element:) 函数接受一个返回元素的显式的闭包。
+func serve(element elementProvider: () -> String) {
+    print("debug \(elementProvider())!")
+}
+
+serve(element: { dataArr.remove(at: 0) } )
+// 打印出“debug Alex!”
+```
+
+```swift
+func serve(element elementProvider: @autoclosure () -> String) {
+    print("debug \(elementProvider())!")
+}
+serve(element: dataArr.remove(at: 0))
+```
 
 # 十二、枚举
 
+枚举简单的说也是一种数据类型，只不过是这种数据类型只包含自定义的特定数据，它是一组有共同特性的数据的集合。
+
+Swift 的枚举类似于 Objective C 和 C 的结构，枚举的功能为:
+
+- 它声明在类中，可以通过实例化类来访问它的值。
+- 枚举也可以定义构造函数（initializers）来提供一个初始成员值；可以在原始的实现基础上扩展它们的功能。
+- 可以遵守协议（protocols）来提供标准的功能。
+
+语法：
+
+```swift
+enum enumname {
+   // 枚举定义放在这里
+}
+```
+
+```swift
+// 定义枚举
+enum DaysofaWeek {
+    case Sunday
+    case Monday
+    case TUESDAY
+    case WEDNESDAY
+    case THURSDAY
+    case FRIDAY
+    case Saturday
+}
+```
 
 
 
+枚举的原始值可以是字符串，字符，或者任何整型值或浮点型值。每个原始值在它的枚举声明中必须是唯一的。在原始值为整数的枚举时，不需要显式的为每一个成员赋值，Swift会自动为你赋值。
+
+```swift
+enum Month: Int {
+    case January = 1, February, March, April, May, June, July, August, September, October, November, December
+}
+
+let yearMonth = Month.May.rawValue
+print("数字月份为: \(yearMonth)。")
+```
 
 # 十三、结构体
 
+通过关键字 struct 来定义结构体：
 
+```swift
+struct studentMarks {
+   var mark1 = 100
+   var mark2 = 78
+   var mark3 = 98
+}
+let marks = studentMarks()
+print("Mark1 是 \(marks.mark1)")
+print("Mark2 是 \(marks.mark2)")
+print("Mark3 是 \(marks.mark3)")
+```
 
+**注意：一个结构体实例在赋值或传递时，封装的数据将会被拷贝而不是被引用，任何在结构体中储存的值类型属性，也将会被拷贝，而不是被引用。**
 
+```swift
+struct MarksStruct {
+   var mark: Int
+
+   init(mark: Int) {
+      self.mark = mark
+   }
+}
+var aStruct = MarksStruct(mark: 98)
+var bStruct = aStruct // aStruct 和 bStruct 是使用相同值的结构体！
+bStruct.mark = 97
+print(aStruct.mark) // 98
+print(bStruct.mark) // 97
+```
 
 # 十四、类
 
