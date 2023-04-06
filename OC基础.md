@@ -6,23 +6,19 @@
 
 ## 1.基础数据类型
 
-| 类型 | NSLog字符 | 描述 |
-| ---- | --------- | ---- |
-| char | %c        |      |
-
-
-
-| 类型                   | NSLog字符                   | 描述|
-| ---------------------- | --------------------------- |   |
-| char                   | %c                          |   |
-| short int              | %hi、%hx、%ho               |   |
-| unsigned short int     | %hu、%hx、%ho %hu、%hx、%ho |   |
+| 类型                   | NSLog字符                   | 描述    |
+| ---------------------- | --------------------------- | ------- |
+| char                   | %c                          |         |
+| short int              | %hi、%hx、%ho               |         |
+| unsigned short int     | %hu、%hx、%ho %hu、%hx、%ho |         |
 | int                    | %i、%x、%o                  | 32/64位 |
-| unsigned int           | %u、%x、%o                  |   |
-| long int               | %li、%lx、%lo               |   |
-| unsigned long int      | %lu、%lx、%lo               |   |
-| long long int          | %lli、%llx、&llo            |   |
-| unsigned long long int | %llu、%llx、%llo            |   |
+| unsigned int           | %u、%x、%o                  |         |
+| long int               | %li、%lx、%lo               |         |
+| unsigned long int      | %lu、%lx、%lo               |         |
+| long long int          | %lli、%llx、&llo            |         |
+| unsigned long long int | %llu、%llx、%llo            |         |
+
+
 
 | 类型                   | NSLog字符                   | 描述|
 | ---------------------- | --------------------------- |   |
