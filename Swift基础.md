@@ -1039,7 +1039,9 @@ let yearMonth = Month.May.rawValue
 print("数字月份为: \(yearMonth)。")
 ```
 
-# 十三、结构体
+# 十三、结构体和类
+
+## 1.结构体
 
 通过关键字 struct 来定义结构体：
 
@@ -1072,7 +1074,943 @@ print(aStruct.mark) // 98
 print(bStruct.mark) // 97
 ```
 
-# 十四、类
+
+
+## 2.类
+
+类是构建代码所用的一种通用且灵活的构造体。Swift通过`class`关键字来定义类：
+
+```swift
+class student{
+   var studname: String
+   var mark: Int 
+   var mark2: Int 
+}
+```
+
+因为类是引用类型，有可能有多个常量和变量在后台同时引用某一个类实例。为了能够判定两个常量或者变量是否引用同一个类实例，Swift 内建了两个恒等运算符：
+
+| **恒等运算符**                                  | **不恒等运算符**                                  |
+| :---------------------------------------------- | :------------------------------------------------ |
+| 运算符为：===                                   | 运算符为：!==                                     |
+| 如果两个常量或者变量引用同一个类实例则返回 true | 如果两个常量或者变量引用不同一个类实例则返回 true |
+
+```swift
+class SampleClass: Equatable {
+    let myProperty: String
+    init(s: String) {
+        myProperty = s
+    }
+}
+let spClass1 = SampleClass(s: "Hello")
+let spClass2 = SampleClass(s: "Hello")
+
+if spClass1 === spClass2 {// false
+    print("引用相同的类实例 \(spClass1)")
+}
+
+if spClass1 !== spClass2 {// true
+    print("引用不相同的类实例 \(spClass2)")
+}
+```
+
+
+
+## 3.属性
+
+属性可分为存储属性和计算属性:
+
+| **存储属性**                   | **计算属性**             |
+| :----------------------------- | :----------------------- |
+| 存储常量或变量作为实例的一部分 | 计算（而不是存储）一个值 |
+| 用于类和结构体                 | 用于类、结构体和枚举     |
+
+存储属性和计算属性通常用于特定类型的实例。另外，还可以定义属性观察器来监控属性值的变化，以此来触发一个自定义的操作。属性观察器可以添加到自己写的存储属性上，也可以添加到从父类继承的属性上。
+
+### 3.1 存储属性
+
+简单来说，一个存储属性就是存储在特定类或结构体的实例里的一个常量或变量。存储属性可以是变量存储属性（用关键字var定义），也可以是常量存储属性（用关键字let定义）。
+
+- 可以在定义存储属性的时候指定默认值
+- 也可以在构造过程中设置或修改存储属性的值，甚至修改常量存储属性的值
+
+```swift
+struct Number
+{
+   var digits: Int
+   let pi = 3.1415
+}
+
+var n = Number(digits: 12345)
+n.digits = 67
+
+print("\(n.digits)")
+print("\(n.pi)")
+```
+
+**延迟存储属性**
+
+延迟存储属性是指当第一次被调用的时候才会计算其初始值的属性。在属性声明前使用 **lazy** 来标示一个延迟存储属性。
+
+```swift
+class sample {
+    lazy var no = number() // `var` 关键字是必须的
+}
+
+class number {
+    var name = "Runoob Swift 教程"
+}
+
+var firstsample = sample()
+print(firstsample.no.name)
+```
+
+***注意：必须将延迟存储属性声明成变量（使用*`var`*关键字），因为属性的值在实例构造完成之前可能无法得到。而常量属性在构造过程完成之前必须要有初始值，因此无法声明成延迟属性。***
+
+### 3.2 计算属性
+
+除存储属性外，类、结构体和枚举可以定义*计算属性*，计算属性不直接存储值，而是提供一个 getter 来获取值，一个可选的 setter 来间接设置其他属性或变量的值。只有 getter 没有 setter 的计算属性就是只读计算属性。只读计算属性总是返回一个值，可以通过点(.)运算符访问，但不能设置新的值。
+
+```swift
+class sample {
+    var no1 = 0.0, no2 = 0.0
+    var length = 300.0, breadth = 150.0
+    
+    var middle: (Double, Double) {
+        get{
+            return (length / 2, breadth / 2)
+        }
+        set(axis){
+            no1 = axis.0 - (length / 2)
+            no2 = axis.1 - (breadth / 2)
+        }
+    }
+}
+
+var result = sample()
+print(result.middle)
+result.middle = (0.0, 10.0)
+
+print(result.no1)
+print(result.no2)
+```
+
+***注意：必须使用`var`关键字定义计算属性，包括只读计算属性，因为它们的值不是固定的。`let`关键字只用来声明常量属性，表示初始化后再也无法修改的值。***
+
+
+
+### 3.3 属性观察器
+
+属性观察器监控和响应属性值的变化，每次属性被设置值的时候都会调用属性观察器，甚至新的值和现在的值相同的时候也不例外。可以为除了延迟存储属性之外的其他存储属性添加属性观察器，也可以通过重载属性的方式为继承的属性（包括存储属性和计算属性）添加属性观察器。可以为属性添加如下的一个或全部观察器：
+
+- `willSet`在设置新的值之前调用
+- `didSet`在新的值被设置之后立即调用
+- willSet和didSet观察器在属性初始化过程中不会被调用
+
+```swift
+class Samplepgm {
+    var counter: Int = 0{
+        willSet(newTotal){
+            print("计数器: \(newTotal)")
+        }
+        didSet{
+            if counter > oldValue {
+                print("新增数 \(counter - oldValue)")
+            }
+        }
+    }
+}
+let NewCounter = Samplepgm()
+NewCounter.counter = 100
+NewCounter.counter = 800
+```
+
+计算属性和属性观察器所描述的模式也可以用于全局变量和局部变量。
+
+| **局部变量**                       | **全局变量**                               |
+| :--------------------------------- | :----------------------------------------- |
+| 在函数、方法或闭包内部定义的变量。 | 函数、方法、闭包或任何类型之外定义的变量。 |
+| 用于存储和检索值。                 | 用于存储和检索值。                         |
+| 存储属性用于获取和设置值。         | 存储属性用于获取和设置值。                 |
+| 也用于计算属性。                   | 也用于计算属性。                           |
+
+### 3.4 类型属性
+
+使用关键字 static 来定义值类型的类型属性，关键字 class 来为类定义类型属性。
+
+```swift
+struct Structname {
+   static var storedTypeProperty = " "
+   static var computedTypeProperty: Int {
+      // 这里返回一个 Int 值
+   }
+}
+
+enum Enumname {
+   static var storedTypeProperty = " "
+   static var computedTypeProperty: Int {
+      // 这里返回一个 Int 值
+   }
+}
+
+class Classname {
+   class var computedTypeProperty: Int {
+      // 这里返回一个 Int 值
+   }
+}
+```
+
+
+
+## 4.方法
+
+在 Objective-C 中，类是唯一能定义方法的类型。但在 Swift 中，你不仅能选择是否要定义一个类/结构体/枚举，还能灵活的在你创建的类型（类/结构体/枚举）上定义方法。与函数参数一样可以同时有一个局部名称（在函数体内部使用）和一个外部名称（在调用函数时使用），也可以使用下划线（_）设置参数不提供一个外部名称。
+
+```swift
+class multiplication {
+    var count: Int = 0
+    func incrementBy(first no1: Int, _ no2: Int) {
+        count = no1 * no2
+        print(count)
+    }
+}
+
+let counter = multiplication()
+counter.incrementBy(first: 800, 3)
+counter.incrementBy(first: 100, 5)
+counter.incrementBy(first: 15000, 3)
+```
+
+### 4.1可变方法
+
+Swift 语言中结构体和枚举是值类型。一般情况下，值类型的属性不能在它的实例方法中被修改。但是，如果你确实需要在某个具体的方法中修改结构体或者枚举的属性，你可以选择变异(mutating)这个方法，然后方法就可以从方法内部改变它的属性；并且它做的任何改变在方法结束时还会保留在原始结构中。方法还可以给它隐含的self属性赋值一个全新的实例，这个新实例在方法结束后将替换原来的实例。
+
+```swift
+struct area {
+    var length = 1
+    var breadth = 1
+    
+    func area() -> Int {
+        return length * breadth
+    }
+    
+    mutating func scaleBy(res: Int) {
+        self.length *= res
+        self.breadth *= res
+        print(length)
+        print(breadth)
+    }
+}
+var val = area(length: 3, breadth: 5)
+val.scaleBy(res: 13)
+```
+
+
+
+### 4.2类型方法
+
+实例方法是被类型的某个实例调用的方法，你也可以定义类型本身调用的方法，这种方法就叫做类型方法。声明结构体和枚举的类型方法，在方法的func关键字之前加上关键字static。类可能会用关键字class来允许子类重写父类的实现方法。
+
+```swift
+class Math
+{
+    class func abs(number: Int) -> Int
+    {
+        if number < 0
+        {
+            return (-number)
+        }
+        else
+        {
+            return number
+        }
+    }
+}
+
+struct absno
+{
+    static func abs(number: Int) -> Int
+    {
+        if number < 0
+        {
+            return (-number)
+        }
+        else
+        {
+            return number
+        }
+    }
+}
+
+let no = Math.abs(number: -35)
+let num = absno.abs(number: -5)
+
+print(no)
+print(num)
+```
+
+
+
+## 5.下标脚本
+
+下标脚本 可以定义在类（Class）、结构体（structure）和枚举（enumeration）这些目标中，可以认为是访问对象、集合或序列的快捷方式，不需要再调用实例的特定的赋值和访问方法。定义下标脚本使用subscript关键字，显式声明入参（一个或多个）和返回类型。与实例方法不同的是下标脚本可以设定为读写或只读。这种方式又有点像计算型属性的getter和setter：
+
+```swift
+class daysofaweek {
+    private var days = ["Sunday", "Monday", "Tuesday", "Wednesday",
+        "Thursday", "Friday", "saturday"]
+    subscript(index: Int) -> String {
+        get {
+            return days[index]   // 声明下标脚本的值
+        }
+        set(newValue) {
+            self.days[index] = newValue   // 执行赋值操作
+        }
+    }
+}
+var p = daysofaweek()
+
+print(p[0])
+print(p[1])
+print(p[2])
+print(p[3])
+```
+
+下标脚本允许任意数量的入参索引，并且每个入参类型也没有限制。下标脚本的返回值也可以是任何类型。下标脚本可以使用变量参数和可变参数。一个类或结构体可以根据自身需要提供多个下标脚本实现，在定义下标脚本时通过传入参数的类型进行区分，使用下标脚本时会自动匹配合适的下标脚本实现运行，这就是**下标脚本的重载**。
+
+## 6.构造过程
+
+构造过程是为了使用某个类、结构体或枚举类型的实例而进行的准备过程。这个过程包含了为实例中的每个属性设置初始值和为其执行必要的准备和初始化任务。
+
+### 6.1构造器
+
+Swift 构造函数使用 init() 方法。类和结构体在实例创建时，必须为所有存储型属性设置合适的初始值。存储属性在构造器中赋值时，它们的值是被直接设置的，不会触发任何属性观测器。
+
+```swift
+struct Rectangle {
+    var length: Double?
+  
+  	//默认构造器
+  	init(){}
+    
+    init(frombreadth breadth: Double) {
+        length = breadth * 10
+    }
+    
+    init(frombre bre: Double) {
+        length = bre * 30
+    }
+    
+    init(_ area: Double) {
+        length = area
+    }
+}
+
+let rectarea = Rectangle(180.0)
+print("面积为：\(rectarea.length)")
+
+let rearea = Rectangle(370.0)
+print("面积为：\(rearea.length)")
+
+let recarea = Rectangle(110.0)
+print("面积为：\(recarea.length)")
+```
+
+
+
+### 6.2结构体的逐一成员构造器
+
+如果结构体对所有存储型属性提供了默认值且自身没有提供定制的构造器，它们能自动获得一个逐一成员构造器。我们在调用逐一成员构造器时，通过与成员属性名相同的参数名进行传值来完成对成员属性的初始赋值。
+
+```swift
+struct Rectangle {
+    var length = 100.0, breadth = 200.0
+}
+let area = Rectangle(length: 24.0, breadth: 32.0)
+
+print("矩形的面积: \(area.length)")
+print("矩形的面积: \(area.breadth)")
+```
+
+### 6.3常量属性初始化
+
+只要在构造过程结束前常量的值能确定，你可以在构造过程中的任意时间点修改常量属性的值。对某个类实例来说，它的常量属性只能在定义它的类的构造过程中修改；不能在子类中修改。
+
+```swift
+struct Rectangle {
+    let length: Double?
+    
+    init(frombreadth breadth: Double) {
+        length = breadth * 10
+    }
+    
+    init(frombre bre: Double) {
+        length = bre * 30
+    }
+    
+    init(_ area: Double) {
+        length = area
+    }
+}
+```
+
+
+
+### 6.4构造器代理
+
+构造器可以通过调用其它构造器来完成实例的部分构造过程。这一过程称为构造器代理，它能减少多个构造器间的代码重复。
+
+```swift
+struct Size {
+    var width = 0.0, height = 0.0
+}
+struct Point {
+    var x = 0.0, y = 0.0
+}
+
+struct Rect {
+    var origin = Point()
+    var size = Size()
+    init() {}
+    init(origin: Point, size: Size) {
+        self.origin = origin
+        self.size = size
+    }
+    init(center: Point, size: Size) {
+        let originX = center.x - (size.width / 2)
+        let originY = center.y - (size.height / 2)
+        self.init(origin: Point(x: originX, y: originY), size: size)
+    }
+}
+```
+
+***构造器代理规则***
+
+| 值类型                                                       | 类类型                                                       |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| 不支持继承，所以构造器代理的过程相对简单，因为它们只能代理给本身提供的其它构造器。 你可以使用self.init在自定义的构造器中引用其它的属于相同值类型的构造器。 | 它可以继承自其它类,这意味着类有责任保证其所有继承的存储型属性在构造时也能正确的初始化。 |
+
+
+
+### 6.5类继承和构造过程
+
+Swift 提供了两种类型的类构造器来确保所有类实例中存储型属性都能获得初始值，它们分别是指定构造器和便利构造器。
+
+| 指定构造器                                                   | 便利构造器                                                   |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 类中最主要的构造器                                           | 类中比较次要的、辅助型的构造器                               |
+| 初始化类中提供的所有属性，并根据父类链往上调用父类的构造器来实现父类的初始化。 | 可以定义便利构造器来调用同一个类中的指定构造器，并为其参数提供默认值。你也可以定义便利构造器来创建一个特殊用途或特定输入的实例。 |
+| 每一个类都必须拥有至少一个指定构造器                         | 只在必要的时候为类提供便利构造器                             |
+| `init(parameters) {    statements }`                         | `convenience init(parameters) {      statements }`           |
+
+```swift
+class MainClass {
+    var name: String
+    
+    init(name: String) {
+        self.name = name
+    }
+    
+    convenience init() {
+        self.init(name: "[匿名]")
+    }
+}
+
+class SubClass: MainClass {
+    var count: Int
+    init(name: String, count: Int) {
+        self.count = count
+        super.init(name: name)
+    }
+    
+    override convenience init(name: String) {
+        self.init(name: name, count: 1)
+    }
+}
+```
+
+
+
+### 6.6类的可失败构造器
+
+如果一个类，结构体或枚举类型的对象，在构造自身的过程中有可能失败，则为其定义一个可失败构造器。可以在一个类，结构体或是枚举类型的定义中，添加一个或多个可失败构造器。其语法为在init关键字后面加添问号(init?)。
+
+```swift
+struct Animal {
+    let species: String
+    init?(species: String) {
+        if species.isEmpty { return nil }
+        self.species = species
+    }
+}
+
+enum TemperatureUnit {
+    // 开尔文，摄氏，华氏
+    case Kelvin, Celsius, Fahrenheit
+    init?(symbol: Character) {
+        switch symbol {
+        case "K":
+            self = .Kelvin
+        case "C":
+            self = .Celsius
+        case "F":
+            self = .Fahrenheit
+        default:
+            return nil
+        }
+    }
+}
+
+class StudRecord {
+    let studname: String!
+    init?(studname: String) {
+        self.studname = studname
+        if studname.isEmpty { return nil }
+    }
+}
+if let stname = StudRecord(studname: "失败构造器") {
+    print("模块为 \(stname.studname)")
+}
+```
+
+也可以使用通过在init后面添加惊叹号的方式来定义一个可失败构造器(init!):
+
+```swift
+struct StudRecord {
+    let stname: String
+    
+    init!(stname: String) {
+        if stname.isEmpty {return nil }
+        self.stname = stname
+    }
+}
+
+let stmark = StudRecord(stname: "Runoob")
+if let name = stmark {
+    print("指定了学生名")
+}
+
+let blankname = StudRecord(stname: "")
+if blankname == nil {
+    print("学生名为空")
+}
+```
+
+
+
+
+
+## 7.析构过程
+
+在一个类的实例被释放之前，析构函数被立即调用。用关键字`deinit`来标示析构函数，类似于初始化函数用`init`来标示。析构函数只适用于类类型。
+
+```swift
+var counter = 0;  // 引用计数器
+class BaseClass {
+    init() {
+        counter += 1;
+    }
+    deinit {
+        counter -= 1;
+    }
+}
+
+var show: BaseClass? = BaseClass()
+print(counter)
+show = nil
+print(counter)
+```
+
+# 十四、继承
+
+当一个类继承其它类时，继承类叫子类，被继承类叫超类（或父类)。在 Swift 中，子类可以调用和访问超类的方法，属性和下标脚本，并且可以重写它们，也可以为类中继承来的属性添加属性观察器。没有继承其它类的类，称之为基类（Base Class）。
+
+```swift
+class StudDetails
+{
+    var mark1: Int;
+    var mark2: Int;
+    
+    init(stm1:Int, results stm2:Int)
+    {
+        mark1 = stm1;
+        mark2 = stm2;
+    }
+    
+    func show()
+    {
+        print("Mark1:\(self.mark1), Mark2:\(self.mark2)")
+    }
+}
+
+class Tom : StudDetails
+{
+    init()
+    {
+        super.init(stm1: 93, results: 89)
+    }
+}
+
+let tom = Tom()
+tom.show()
+```
+
+
+
+## 1.`super`关键字
+
+使用super前缀来访问超类的方法，属性或下标脚本。
+
+| 重写     | 访问方法，属性，下标脚本 |
+| :------- | :----------------------- |
+| 方法     | super.somemethod()       |
+| 属性     | super.someProperty()     |
+| 下标脚本 | super[someIndex]         |
+
+## 2.重写
+
+使用 override 关键字来实现重写。如果不希望属性或方法被子类重写，可以使用 final 关键字防止它们被重写。
+
+```swift
+class SuperClass {
+    func show() {
+        print("这是超类 SuperClass")
+    }
+}
+
+class SubClass: SuperClass  {
+    override func show() {
+        print("这是子类 SubClass")
+    }
+}
+
+let superClass = SuperClass()
+superClass.show()
+
+let subClass = SubClass()
+subClass.show()
+```
+
+子类可以提供定制的 getter（或 setter）来重写任意继承来的属性，无论继承来的属性是存储型的还是计算型的属性。
+
+- 如果你在重写属性中提供了 setter，那么你也一定要提供 getter。
+- 如果你不想在重写版本中的 getter 里修改继承来的属性值，你可以直接通过super.someProperty来返回继承来的值，其中someProperty是你要重写的属性的名字。
+
+```swift
+class Circle {
+    var radius = 12.5
+    var area: String {
+        return "矩形半径 \(radius) "
+    }
+}
+
+// 继承超类 Circle
+class Rectangle: Circle {
+    var print = 7
+    override var area: String {
+        return super.area + " ，但现在被重写为 \(print)"
+    }
+}
+
+let rect = Rectangle()
+rect.radius = 25.0
+rect.print = 3
+print("Radius \(rect.area)")
+```
+
+子类可以在属性重写中为一个继承来的属性添加属性观察器。这样一来，当继承来的属性值发生改变时，就会监测到。
+
+**注意：**不可以为继承来的常量存储型属性或继承来的只读计算型属性添加属性观察器。
+
+```swift
+class Circle {
+    var radius = 12.5
+    var area: String {
+        return "矩形半径为 \(radius) "
+    }
+}
+
+class Rectangle: Circle {
+    var print = 7
+    override var area: String {
+        return super.area + " ，但现在被重写为 \(print)"
+    }
+}
+
+
+let rect = Rectangle()
+rect.radius = 25.0
+rect.print = 3
+print("半径: \(rect.area)")
+
+class Square: Rectangle {
+    override var radius: Double {
+        didSet {
+            print = Int(radius/5.0)+1
+        }
+    }
+}
+
+
+let sq = Square()
+sq.radius = 100.0
+print("半径: \(sq.area)")
+```
+
+# 十五、自动引用计数（ARC）
+
+Swift 使用自动引用计数（ARC）这一机制来跟踪和管理应用程序的内存通常情况下我们不需要去手动释放内存，因为 ARC 会在类的实例不再被使用时，自动释放其占用的内存。
+
+***ARC 功能***
+
+- 当每次使用 init() 方法创建一个类的新的实例的时候，ARC 会分配一大块内存用来储存实例的信息。
+- 内存中会包含实例的类型信息，以及这个实例所有相关属性的值。
+- 当实例不再被使用时，ARC 释放实例所占用的内存，并让释放的内存能挪作他用。
+- 为了确保使用中的实例不会被销毁，ARC 会跟踪和计算每一个实例正在被多少属性，常量和变量所引用。
+- 实例赋值给属性、常量或变量，它们都会创建此实例的强引用，只要强引用还在，实例是不允许被销毁的。
+
+```swift
+class Person {
+    let name: String
+    init(name: String) {
+        self.name = name
+        print("\(name) 开始初始化")
+    }
+    deinit {
+        print("\(name) 被析构")
+    }
+}
+
+// 值会被自动初始化为nil，目前还不会引用到Person类的实例
+var reference1: Person?
+var reference2: Person?
+var reference3: Person?
+
+// 创建Person类的新实例
+reference1 = Person(name: "Runoob")
+
+
+//赋值给其他两个变量，该实例又会多出两个强引用
+reference2 = reference1
+reference3 = reference1
+
+//断开第一个强引用
+reference1 = nil
+//断开第二个强引用
+reference2 = nil
+//断开第三个强引用，并调用析构函数
+reference3 = nil
+```
+
+## 循环强引用
+
+### 类实例之间的循环强引用
+
+可能会写出这样的代码，一个类永远不会有0个强引用。这种情况发生在两个类实例互相保持对方的强引用，并让对方不被销毁。这就是所谓的循环强引用。
+
+```swift
+class Person {
+    let name: String
+    init(name: String) { self.name = name }
+    var apartment: Apartment?
+    deinit { print("\(name) 被析构") }
+}
+
+class Apartment {
+    let number: Int
+    init(number: Int) { self.number = number }
+    var tenant: Person?
+    deinit { print("Apartment #\(number) 被析构") }
+}
+
+// 两个变量都被初始化为nil
+var runoob: Person?
+var number73: Apartment?
+
+// 赋值
+runoob = Person(name: "Runoob")
+number73 = Apartment(number: 73)
+
+// 意感叹号是用来展开和访问可选变量 runoob 和 number73 中的实例
+// 循环强引用被创建
+runoob!.apartment = number73
+number73!.tenant = runoob
+
+// 断开 runoob 和 number73 变量所持有的强引用时，引用计数并不会降为 0，实例也不会被 ARC 销毁
+// 注意，当你把这两个变量设为nil时，没有任何一个析构函数被调用。
+// 强引用循环阻止了Person和Apartment类实例的销毁，并在你的应用程序中造成了内存泄漏
+runoob = nil
+number73 = nil
+```
+
+
+
+Swift 提供了两种办法用来解决你在使用类的属性时所遇到的循环强引用问题：
+
+- 弱引用`weak`
+
+  ```swift
+  class Module {
+      let name: String
+      init(name: String) { self.name = name }
+      var sub: SubModule?
+      deinit { print("\(name) 主模块") }
+  }
+  
+  class SubModule {
+      let number: Int
+      
+      init(number: Int) { self.number = number }
+      
+      weak var topic: Module?
+      
+      deinit { print("子模块 topic 数为 \(number)") }
+  }
+  
+  var toc: Module?
+  var list: SubModule?
+  toc = Module(name: "ARC")
+  list = SubModule(number: 4)
+  toc!.sub = list
+  list!.topic = toc
+  
+  toc = nil
+  list = nil
+  ```
+
+  
+
+- 无主引用`unowned`
+
+  ```swift
+  class Student {
+      let name: String
+      var section: Marks?
+      
+      init(name: String) {
+          self.name = name
+      }
+      
+      deinit { print("\(name)") }
+  }
+  class Marks {
+      let marks: Int
+      unowned let stname: Student
+      
+      init(marks: Int, stname: Student) {
+          self.marks = marks
+          self.stname = stname
+      }
+      
+      deinit { print("学生的分数为 \(marks)") }
+  }
+  
+  var module: Student?
+  module = Student(name: "ARC")
+  module!.section = Marks(marks: 98, stname: module!)
+  module = nil
+  ```
+
+弱引用和无主引用允许循环引用中的一个实例引用另外一个实例而不保持强引用。这样实例能够互相引用而不产生循环强引用。对于生命周期中会变为nil的实例使用弱引用。相反的，对于初始化赋值后再也不会被赋值为nil的实例，使用无主引用。
+
+### 闭包引起的循环强引用
+
+循环强引用还会发生在当你将一个闭包赋值给类实例的某个属性，并且这个闭包体中又使用了实例。这个闭包体中可能访问了实例的某个属性，例如self.someProperty，或者闭包中调用了实例的某个方法，例如self.someMethod。这两种情况都导致了闭包 "捕获" self，从而产生了循环强引用。
+
+```swift
+class HTMLElement {
+    
+    let name: String
+    let text: String?
+    
+    lazy var asHTML: () -> String = {
+        if let text = self.text {
+            return "<\(self.name)>\(text)</\(self.name)>"
+        } else {
+            return "<\(self.name) />"
+        }
+    }
+    
+    init(name: String, text: String? = nil) {
+        self.name = name
+        self.text = text
+    }
+    
+    deinit {
+        print("\(name) is being deinitialized")
+    }
+    
+}
+
+// 创建实例并打印信息
+var paragraph: HTMLElement? = HTMLElement(name: "p", text: "hello, world")
+print(paragraph!.asHTML())
+```
+
+***当闭包和捕获的实例总是互相引用时并且总是同时销毁时，将闭包内的捕获定义为无主引用。相反的，当捕获引用有时可能会是nil时，将闭包内的捕获定义为弱引用。如果捕获的引用绝对不会置为nil，应该用无主引用，而不是弱引用。***
+
+```swift
+class HTMLElement {
+    
+    let name: String
+    let text: String?
+    
+    lazy var asHTML: () -> String = {
+        [unowned self] in
+        if let text = self.text {
+            return "<\(self.name)>\(text)</\(self.name)>"
+        } else {
+            return "<\(self.name) />"
+        }
+    }
+    
+    init(name: String, text: String? = nil) {
+        self.name = name
+        self.text = text
+    }
+    
+    deinit {
+        print("\(name) 被析构")
+    }
+    
+}
+
+//创建并打印HTMLElement实例
+var paragraph: HTMLElement? = HTMLElement(name: "p", text: "hello, world")
+print(paragraph!.asHTML())
+
+// HTMLElement实例将会被销毁，并能看到它的析构函数打印出的消息
+paragraph = nil
+```
+
+# 十六、协议
+
+协议规定了用来实现某一特定功能所必需的方法和属性。任意能够满足协议要求的类型被称为遵循(conform)这个协议。类、结构体或枚举类型都可以遵循协议，并提供具体实现来完成协议定义的方法和功能。
+
+定义协议：
+
+```swift
+protocol SomeProtocol {
+    // 协议内容
+}
+```
+
+要使类、结构体或枚举遵循某个协议，需要在类型名称后加上协议名称，中间以冒号:分隔，作为类型定义的一部分。遵循多个协议时，各协议之间用逗号,分隔。
+
+```swift
+struct SomeStructure: FirstProtocol, AnotherProtocol {
+    // 结构体内容
+}
+class SomeClass: SomeSuperClass, FirstProtocol, AnotherProtocol {
+    // 类的内容
+}
+```
+
+
+
+
+
+# 十七、泛型
 
 
 
@@ -1080,25 +2018,9 @@ print(bStruct.mark) // 97
 
 
 
-# 十五、继承
+# 十八、访问控制
 
-
-
-
-
-# 十六、自动引用计数（ARC）
-
-
-
-
-
-# 十七、协议
-
-
-
-
-
-# 十八、泛型
+访问控制可以限定其他源文件或模块中代码对你代码的访问级别。
 
 
 
