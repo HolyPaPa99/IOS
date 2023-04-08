@@ -995,7 +995,9 @@ func serve(element elementProvider: @autoclosure () -> String) {
 serve(element: dataArr.remove(at: 0))
 ```
 
-# 十二、枚举
+# 十二、枚举、结构体和类
+
+## 1.枚举
 
 枚举简单的说也是一种数据类型，只不过是这种数据类型只包含自定义的特定数据，它是一组有共同特性的数据的集合。
 
@@ -1039,9 +1041,9 @@ let yearMonth = Month.May.rawValue
 print("数字月份为: \(yearMonth)。")
 ```
 
-# 十三、结构体和类
 
-## 1.结构体
+
+## 2.结构体
 
 通过关键字 struct 来定义结构体：
 
@@ -1076,7 +1078,7 @@ print(bStruct.mark) // 97
 
 
 
-## 2.类
+## 3.类
 
 类是构建代码所用的一种通用且灵活的构造体。Swift通过`class`关键字来定义类：
 
@@ -1116,7 +1118,7 @@ if spClass1 !== spClass2 {// true
 
 
 
-## 3.属性
+## 4.属性
 
 属性可分为存储属性和计算属性:
 
@@ -1127,7 +1129,7 @@ if spClass1 !== spClass2 {// true
 
 存储属性和计算属性通常用于特定类型的实例。另外，还可以定义属性观察器来监控属性值的变化，以此来触发一个自定义的操作。属性观察器可以添加到自己写的存储属性上，也可以添加到从父类继承的属性上。
 
-### 3.1 存储属性
+### 4.1 存储属性
 
 简单来说，一个存储属性就是存储在特定类或结构体的实例里的一个常量或变量。存储属性可以是变量存储属性（用关键字var定义），也可以是常量存储属性（用关键字let定义）。
 
@@ -1167,7 +1169,7 @@ print(firstsample.no.name)
 
 ***注意：必须将延迟存储属性声明成变量（使用*`var`*关键字），因为属性的值在实例构造完成之前可能无法得到。而常量属性在构造过程完成之前必须要有初始值，因此无法声明成延迟属性。***
 
-### 3.2 计算属性
+### 4.2 计算属性
 
 除存储属性外，类、结构体和枚举可以定义*计算属性*，计算属性不直接存储值，而是提供一个 getter 来获取值，一个可选的 setter 来间接设置其他属性或变量的值。只有 getter 没有 setter 的计算属性就是只读计算属性。只读计算属性总是返回一个值，可以通过点(.)运算符访问，但不能设置新的值。
 
@@ -1199,7 +1201,7 @@ print(result.no2)
 
 
 
-### 3.3 属性观察器
+### 4.3 属性观察器
 
 属性观察器监控和响应属性值的变化，每次属性被设置值的时候都会调用属性观察器，甚至新的值和现在的值相同的时候也不例外。可以为除了延迟存储属性之外的其他存储属性添加属性观察器，也可以通过重载属性的方式为继承的属性（包括存储属性和计算属性）添加属性观察器。可以为属性添加如下的一个或全部观察器：
 
@@ -1234,7 +1236,7 @@ NewCounter.counter = 800
 | 存储属性用于获取和设置值。         | 存储属性用于获取和设置值。                 |
 | 也用于计算属性。                   | 也用于计算属性。                           |
 
-### 3.4 类型属性
+### 4.4 类型属性
 
 使用关键字 static 来定义值类型的类型属性，关键字 class 来为类定义类型属性。
 
@@ -1262,7 +1264,7 @@ class Classname {
 
 
 
-## 4.方法
+## 5.方法
 
 在 Objective-C 中，类是唯一能定义方法的类型。但在 Swift 中，你不仅能选择是否要定义一个类/结构体/枚举，还能灵活的在你创建的类型（类/结构体/枚举）上定义方法。与函数参数一样可以同时有一个局部名称（在函数体内部使用）和一个外部名称（在调用函数时使用），也可以使用下划线（_）设置参数不提供一个外部名称。
 
@@ -1281,7 +1283,7 @@ counter.incrementBy(first: 100, 5)
 counter.incrementBy(first: 15000, 3)
 ```
 
-### 4.1可变方法
+### 5.1可变方法
 
 Swift 语言中结构体和枚举是值类型。一般情况下，值类型的属性不能在它的实例方法中被修改。但是，如果你确实需要在某个具体的方法中修改结构体或者枚举的属性，你可以选择变异(mutating)这个方法，然后方法就可以从方法内部改变它的属性；并且它做的任何改变在方法结束时还会保留在原始结构中。方法还可以给它隐含的self属性赋值一个全新的实例，这个新实例在方法结束后将替换原来的实例。
 
@@ -1307,7 +1309,7 @@ val.scaleBy(res: 13)
 
 
 
-### 4.2类型方法
+### 5.2类型方法
 
 实例方法是被类型的某个实例调用的方法，你也可以定义类型本身调用的方法，这种方法就叫做类型方法。声明结构体和枚举的类型方法，在方法的func关键字之前加上关键字static。类可能会用关键字class来允许子类重写父类的实现方法。
 
@@ -1351,9 +1353,9 @@ print(num)
 
 
 
-## 5.下标脚本
+## 6.下标脚本
 
-下标脚本 可以定义在类（Class）、结构体（structure）和枚举（enumeration）这些目标中，可以认为是访问对象、集合或序列的快捷方式，不需要再调用实例的特定的赋值和访问方法。定义下标脚本使用subscript关键字，显式声明入参（一个或多个）和返回类型。与实例方法不同的是下标脚本可以设定为读写或只读。这种方式又有点像计算型属性的getter和setter：
+下标脚本可以定义在类（Class）、结构体（structure）和枚举（enumeration）这些目标中，可以认为是访问对象、集合或序列的快捷方式，不需要再调用实例的特定的赋值和访问方法。定义下标脚本使用`subscript`关键字，显式声明入参（一个或多个）和返回类型。与实例方法不同的是下标脚本可以设定为读写或只读。这种方式又有点像计算型属性的getter和setter：
 
 ```swift
 class daysofaweek {
@@ -1378,11 +1380,11 @@ print(p[3])
 
 下标脚本允许任意数量的入参索引，并且每个入参类型也没有限制。下标脚本的返回值也可以是任何类型。下标脚本可以使用变量参数和可变参数。一个类或结构体可以根据自身需要提供多个下标脚本实现，在定义下标脚本时通过传入参数的类型进行区分，使用下标脚本时会自动匹配合适的下标脚本实现运行，这就是**下标脚本的重载**。
 
-## 6.构造过程
+## 7.构造过程
 
 构造过程是为了使用某个类、结构体或枚举类型的实例而进行的准备过程。这个过程包含了为实例中的每个属性设置初始值和为其执行必要的准备和初始化任务。
 
-### 6.1构造器
+### 7.1构造器
 
 Swift 构造函数使用 init() 方法。类和结构体在实例创建时，必须为所有存储型属性设置合适的初始值。存储属性在构造器中赋值时，它们的值是被直接设置的，不会触发任何属性观测器。
 
@@ -1418,7 +1420,7 @@ print("面积为：\(recarea.length)")
 
 
 
-### 6.2结构体的逐一成员构造器
+### 7.2结构体的逐一成员构造器
 
 如果结构体对所有存储型属性提供了默认值且自身没有提供定制的构造器，它们能自动获得一个逐一成员构造器。我们在调用逐一成员构造器时，通过与成员属性名相同的参数名进行传值来完成对成员属性的初始赋值。
 
@@ -1432,7 +1434,7 @@ print("矩形的面积: \(area.length)")
 print("矩形的面积: \(area.breadth)")
 ```
 
-### 6.3常量属性初始化
+### 7.3常量属性初始化
 
 只要在构造过程结束前常量的值能确定，你可以在构造过程中的任意时间点修改常量属性的值。对某个类实例来说，它的常量属性只能在定义它的类的构造过程中修改；不能在子类中修改。
 
@@ -1456,7 +1458,7 @@ struct Rectangle {
 
 
 
-### 6.4构造器代理
+### 7.4构造器代理
 
 构造器可以通过调用其它构造器来完成实例的部分构造过程。这一过程称为构造器代理，它能减少多个构造器间的代码重复。
 
@@ -1492,7 +1494,7 @@ struct Rect {
 
 
 
-### 6.5类继承和构造过程
+### 7.5类继承和构造过程
 
 Swift 提供了两种类型的类构造器来确保所有类实例中存储型属性都能获得初始值，它们分别是指定构造器和便利构造器。
 
@@ -1531,7 +1533,7 @@ class SubClass: MainClass {
 
 
 
-### 6.6类的可失败构造器
+### 7.6类的可失败构造器
 
 如果一个类，结构体或枚举类型的对象，在构造自身的过程中有可能失败，则为其定义一个可失败构造器。可以在一个类，结构体或是枚举类型的定义中，添加一个或多个可失败构造器。其语法为在init关键字后面加添问号(init?)。
 
@@ -1598,9 +1600,7 @@ if blankname == nil {
 
 
 
-
-
-## 7.析构过程
+## 8.析构过程
 
 在一个类的实例被释放之前，析构函数被立即调用。用关键字`deinit`来标示析构函数，类似于初始化函数用`init`来标示。析构函数只适用于类类型。
 
@@ -1621,7 +1621,7 @@ show = nil
 print(counter)
 ```
 
-# 十四、继承
+# 十三、继承
 
 当一个类继承其它类时，继承类叫子类，被继承类叫超类（或父类)。在 Swift 中，子类可以调用和访问超类的方法，属性和下标脚本，并且可以重写它们，也可以为类中继承来的属性添加属性观察器。没有继承其它类的类，称之为基类（Base Class）。
 
@@ -1757,7 +1757,7 @@ sq.radius = 100.0
 print("半径: \(sq.area)")
 ```
 
-# 十五、自动引用计数（ARC）
+# 十四、自动引用计数（ARC）
 
 Swift 使用自动引用计数（ARC）这一机制来跟踪和管理应用程序的内存通常情况下我们不需要去手动释放内存，因为 ARC 会在类的实例不再被使用时，自动释放其占用的内存。
 
@@ -1983,7 +1983,7 @@ print(paragraph!.asHTML())
 paragraph = nil
 ```
 
-# 十六、协议
+# 十五、协议
 
 协议规定了用来实现某一特定功能所必需的方法和属性。任意能够满足协议要求的类型被称为遵循(conform)这个协议。类、结构体或枚举类型都可以遵循协议，并提供具体实现来完成协议定义的方法和功能。
 
@@ -1995,7 +1995,7 @@ protocol SomeProtocol {
 }
 ```
 
-要使类、结构体或枚举遵循某个协议，需要在类型名称后加上协议名称，中间以冒号:分隔，作为类型定义的一部分。遵循多个协议时，各协议之间用逗号,分隔。
+要使类、结构体或枚举遵循某个协议，需要在类型名称后加上协议名称，中间以冒号:分隔，作为类型定义的一部分。***遵循多个协议时，各协议之间用逗号,分隔。***
 
 ```swift
 struct SomeStructure: FirstProtocol, AnotherProtocol {
@@ -2006,23 +2006,708 @@ class SomeClass: SomeSuperClass, FirstProtocol, AnotherProtocol {
 }
 ```
 
+尽管协议本身并不实现任何功能，但是协议可以被当做类型来使用。协议可以像其他普通类型一样使用，使用场景:
+
+- 作为函数、方法或构造器中的参数类型或返回值类型
+- 作为常量、变量或属性的类型
+- 作为数组、字典或其他容器中的元素类型
+
+## 1.属性定义
+
+协议用于指定特定的实例属性或类属性，而不用指定是存储型属性或计算型属性。此外还必须指明是只读的还是可读可写的。协议中的通常用var来声明变量属性，在类型声明后加上{ set get }来表示属性是可读可写的，只读属性则用{ get }来表示。
+
+```swift
+protocol classa {
+    
+    var marks: Int { get set }
+    var result: Bool { get }
+    
+    func attendance() -> String
+    func markssecured() -> String
+    
+}
+
+protocol classb: classa {
+    
+    var present: Bool { get set }
+    var subject: String { get set }
+    var stname: String { get set }
+    
+}
+
+class classc: classb {
+    var marks = 96
+    let result = true
+    var present = false
+    var subject = "Swift 协议"
+    var stname = "Protocols"
+    
+    func attendance() -> String {
+        return "The \(stname) has secured 99% attendance"
+    }
+    
+    func markssecured() -> String {
+        return "\(stname) has scored \(marks)"
+    }
+}
+
+```
 
 
 
+## 2.定义`mutating`方法
 
-# 十七、泛型
+有时需要在方法中改变它的实例，将mutating关键字作为函数的前缀，写在func之前，表示可以在该方法中修改它所属的实例及其实例属性的值。
+
+```swift
+protocol daysofaweek {
+    mutating func show()
+}
+
+enum days: daysofaweek {
+    case sun, mon, tue, wed, thurs, fri, sat
+    mutating func show() {
+        switch self {
+        case .sun:
+            self = .sun
+            print("Sunday")
+        case .mon:
+            self = .mon
+            print("Monday")
+        case .tue:
+            self = .tue
+            print("Tuesday")
+        case .wed:
+            self = .wed
+            print("Wednesday")
+        case .thurs:
+            self = .thurs
+            print("Wednesday")
+        case .fri:
+            self = .fri
+            print("Firday")
+        case .sat:
+            self = .sat
+            print("Saturday")
+        default:
+            print("NO Such Day")
+        }
+    }
+}
+
+var res = days.wed
+res.show()
+```
 
 
 
+## 3.定义构造方法
+
+协议可以要求它的遵循者实现指定的构造器。在协议的定义里写下构造器的声明，但不需要写花括号和构造器的实体。
+
+```swift
+protocol tcpprotocol {
+   init(aprot: Int)
+}
+```
+
+在遵循该协议的类中实现构造器，并指定其为类的指定构造器或者便利构造器。在这两种情况下，你都必须给构造器实现标上"required"修饰符。使用required修饰符可以保证：所有的遵循该协议的子类，同样能为构造器规定提供一个显式的实现或继承实现。如果一个子类重写了父类的指定构造器，并且该构造器遵循了某个协议的规定，那么该构造器的实现需要被同时标示required和override修饰符。
+
+```swift
+protocol tcpprotocol {
+   init(aprot: Int)
+}
+
+class tcpClass: tcpprotocol {
+   required init(aprot: Int) {
+   }
+}
+```
+
+```swift
+protocol tcpprotocol {
+    init(no1: Int)
+}
+
+class mainClass {
+    var no1: Int // 局部变量
+    init(no1: Int) {
+        self.no1 = no1 // 初始化
+    }
+}
+
+class subClass: mainClass, tcpprotocol {
+    var no2: Int
+    init(no1: Int, no2 : Int) {
+        self.no2 = no2
+        super.init(no1:no1)
+    }
+    // 因为遵循协议，需要加上"required"; 因为继承自父类，需要加上"override"
+    required override convenience init(no1: Int)  {
+        self.init(no1:no1, no2:0)
+    }
+}
+```
+
+## 4.协议的继承
+
+协议能够继承一个或多个其他协议，可以在继承的协议基础上增加新的内容要求。协议的继承语法与类的继承相似，多个被继承的协议间用逗号分隔：
+
+```swift
+protocol InheritingProtocol: SomeProtocol, AnotherProtocol {
+    // 协议定义
+}
+```
+
+## 5.类专属协议
+
+在协议的继承列表中,通过添加class关键字,限制协议只能适配到类（class）类型。
+
+```swift
+protocol SomeClassOnlyProtocol: class, SomeInheritedProtocol {
+    // 协议定义
+}
+```
+
+## 6.协议合成
+
+Swift支持合成多个协议，这在我们需要同时遵循多个协议时非常有用。使用`&`符号合成遵循将多个协议类型。
+
+```swift
+protocol Stname {
+    var name: String { get }
+}
+
+protocol Stage {
+    var age: Int { get }
+}
+
+struct Person: Stname, Stage {
+    var name: String
+    var age: Int
+}
+
+func show(celebrator: Stname & Stage) {
+    print("\(celebrator.name) is \(celebrator.age) years old")
+}
+```
+
+## 7.验证是否遵循了协议
+
+可以使用is和as操作符来检查是否遵循某一协议或强制转化为某一类型。
+
+- `is`操作符用来检查实例是否遵循了某个协议。
+- `as?`返回一个可选值，当实例遵循协议时，返回该协议类型;否则返回`nil`。
+- `as!`用以强制向下转型，如果强转失败，会引起运行时错误。
+
+```swift
+protocol HasArea {
+    var area: Double { get }
+}
+
+// 定义了Circle类，都遵循了HasArea协议
+class Circle: HasArea {
+    let pi = 3.1415927
+    var radius: Double
+    var area: Double { return pi * radius * radius }
+    init(radius: Double) { self.radius = radius }
+}
+
+// 定义了Country类，都遵循了HasArea协议
+class Country: HasArea {
+    var area: Double
+    init(area: Double) { self.area = area }
+}
+
+// Animal是一个没有实现HasArea协议的类
+class Animal {
+    var legs: Int
+    init(legs: Int) { self.legs = legs }
+}
+
+let objects: [AnyObject] = [
+    Circle(radius: 2.0),
+    Country(area: 243_610),
+    Animal(legs: 4)
+]
+
+for object in objects {
+    // 对迭代出的每一个元素进行检查，看它是否遵循了HasArea协议
+    if let objectWithArea = object as? HasArea {
+        print("面积为 \(objectWithArea.area)")
+    } else {
+        print("没有面积")
+    }
+}
+```
+
+# 十六、泛型
+
+Swift 提供了泛型让你写出灵活且可重用的函数和类型。泛型使用了占位类型名（在这里用字母 T 来表示）来代替实际类型名。
+
+```swift
+func swapTwoValues<T>(_ a: inout T, _ b: inout T)
+```
+
+swapTwoValues 后面跟着占位类型名（T），并用尖括号括起来（`<T>`）。这个尖括号告诉 Swift 那个 T 是 swapTwoValues(_:_:) 函数定义内的一个占位类型名，因此 Swift 不会去查找名为 T 的实际类型。
+
+```swift
+// 定义一个交换两个变量的函数
+func swapTwoValues<T>(_ a: inout T, _ b: inout T) {
+    let temporaryA = a
+    a = b
+    b = temporaryA
+}
+ 
+var numb1 = 100
+var numb2 = 200
+ 
+print("交换前数据:  \(numb1) 和 \(numb2)")
+swapTwoValues(&numb1, &numb2)
+print("交换后数据: \(numb1) 和 \(numb2)")
+ 
+var str1 = "A"
+var str2 = "B"
+ 
+print("交换前数据:  \(str1) 和 \(str2)")
+swapTwoValues(&str1, &str2)
+print("交换后数据: \(str1) 和 \(str2)")
+```
+
+Swift 允许你定义你自己的泛型类型。自定义类、结构体和枚举作用于任何类型，如同 Array 和 Dictionary 的用法。
+
+```swift
+//泛型栈
+struct Stack<Element> {
+    var items = [Element]()
+    mutating func push(_ item: Element) {
+        items.append(item)
+    }
+    mutating func pop() -> Element {
+        return items.removeLast()
+    }
+}
+ 
+var stackOfStrings = Stack<String>()
+print("字符串元素入栈: ")
+stackOfStrings.push("google")
+stackOfStrings.push("runoob")
+print(stackOfStrings.items);
+ 
+let deletetos = stackOfStrings.pop()
+print("出栈元素: " + deletetos)
+ 
+var stackOfInts = Stack<Int>()
+print("整数元素入栈: ")
+stackOfInts.push(1)
+stackOfInts.push(2)
+print(stackOfInts.items);
+```
+
+## 1.类型约束
+
+类型约束指定了一个必须继承自指定类的类型参数，或者遵循一个特定的协议或协议构成。一个在一个类型参数名后面的类型约束，通过冒号分割，来作为类型参数链的一部分。这种作用于泛型函数的类型约束的基础语法如下所示（和泛型类型的语法相同）：
+
+```swift
+func someFunction<T: SomeClass, U: SomeProtocol>(someT: T, someU: U) {
+    // 这里是泛型函数的函数体部分
+}
+```
+
+第一个类型参数 T，有一个要求 T 必须是 SomeClass 子类的类型约束；第二个类型参数 U，有一个要求 U 必须符合 SomeProtocol 协议的类型约束。
 
 
 
+## 2.关联类型
 
-# 十八、访问控制
+Swift 中使用 associatedtype 关键字来设置关联类型实例。
 
-访问控制可以限定其他源文件或模块中代码对你代码的访问级别。
+```swift
+// Container 协议
+protocol Container {
+    associatedtype ItemType
+    // 添加一个新元素到容器里
+    mutating func append(_ item: ItemType)
+    // 获取容器中元素的数
+    var count: Int { get }
+    // 通过索引值类型为 Int 的下标检索到容器中的每一个元素
+    subscript(i: Int) -> ItemType { get }
+}
+
+// Stack 结构体遵从 Container 协议
+struct Stack<Element>: Container {
+    // Stack<Element> 的原始实现部分
+    var items = [Element]()
+    mutating func push(_ item: Element) {
+        items.append(item)
+    }
+    mutating func pop() -> Element {
+        return items.removeLast()
+    }
+    // Container 协议的实现部分
+    mutating func append(_ item: Element) {
+        self.push(item)
+    }
+    var count: Int {
+        return items.count
+    }
+    subscript(i: Int) -> Element {
+        return items[i]
+    }
+}
+
+var tos = Stack<String>()
+tos.push("google")
+tos.push("runoob")
+tos.push("taobao")
+// 元素列表
+print(tos.items)
+// 元素个数
+print( tos.count)
+```
 
 
 
+## 3.`where`语句
 
+where语句，紧跟在在类型参数列表后面，where语句后跟一个或者多个针对关联类型的约束，以及（或）一个或多个类型和关联类型间的等价(equality)关系。
+
+```swift
+// Container 协议
+protocol Container {
+    associatedtype ItemType
+    // 添加一个新元素到容器里
+    mutating func append(_ item: ItemType)
+    // 获取容器中元素的数
+    var count: Int { get }
+    // 通过索引值类型为 Int 的下标检索到容器中的每一个元素
+    subscript(i: Int) -> ItemType { get }
+}
+ 
+// // 遵循Container协议的泛型TOS类型
+struct Stack<Element>: Container {
+    // Stack<Element> 的原始实现部分
+    var items = [Element]()
+    mutating func push(_ item: Element) {
+        items.append(item)
+    }
+    mutating func pop() -> Element {
+        return items.removeLast()
+    }
+    // Container 协议的实现部分
+    mutating func append(_ item: Element) {
+        self.push(item)
+    }
+    var count: Int {
+        return items.count
+    }
+    subscript(i: Int) -> Element {
+        return items[i]
+    }
+}
+// 扩展，将 Array 当作 Container 来使用
+extension Array: Container {}
+ 
+func allItemsMatch<C1: Container, C2: Container>
+    (_ someContainer: C1, _ anotherContainer: C2) -> Bool
+    where C1.ItemType == C2.ItemType, C1.ItemType: Equatable {
+        
+        // 检查两个容器含有相同数量的元素
+        if someContainer.count != anotherContainer.count {
+            return false
+        }
+        
+        // 检查每一对元素是否相等
+        for i in 0..<someContainer.count {
+            if someContainer[i] != anotherContainer[i] {
+                return false
+            }
+        }
+        
+        // 所有元素都匹配，返回 true
+        return true
+}
+var tos = Stack<String>()
+tos.push("google")
+tos.push("runoob")
+tos.push("taobao")
+ 
+var aos = ["google", "runoob", "taobao"]
+ 
+if allItemsMatch(tos, aos) {
+    print("匹配所有元素")
+} else {
+    print("元素不匹配")
+}
+```
+
+# 十七、访问控制
+
+访问控制可以限定其他源文件或模块中代码对你代码的访问级别。可以明确地给单个类型（类、结构体、枚举）设置访问级别，也可以给这些类型的属性、函数、初始化方法、基本类型、下标索引等设置访问级别。协议也可以被限定在一定的范围内使用，包括协议里的全局常量、变量和函数。
+
+## 1.访问级别
+
+Swift 为代码中的实体提供了四种不同的访问级别，按级别从高到低排序：**public、internal、fileprivate、private**。
+
+| 访问级别    | 定义                                                         |
+| :---------- | :----------------------------------------------------------- |
+| public      | 可以访问自己模块中源文件里的任何实体，别人也可以通过引入该模块来访问源文件里的所有实体。 |
+| internal    | 可以访问自己模块中源文件里的任何实体，但是别人不能访问该模块中源文件里的实体。（默认） |
+| fileprivate | 文件内私有，只能在当前源文件中使用。                         |
+| private     | 只能在类中访问，离开了这个类或者结构体的作用域外面就无法访问。 |
+
+模块指的是以独立单元构建和发布的 Framework 或 Application。在 Swift 中的一个模块可以使用 `import` 关键字引入另外一个模块。源文件是单个源码文件，它通常属于一个模块， 源文件可以包含多个类和函数 的定义。
+
+***未指定访问级别默认为 `internal`***
+
+## 2.不同类型访问级别的原则
+
+### 2.1元组
+
+元组的访问级别与元组中访问级别最低的类型一致。
+
+### 2.2函数
+
+函数的访问级别需要根据该函数的参数类型和返回类型的访问级别得出。如果函数返回类型的访问级别是 private，那么必须使用 private 修饰符，明确的声明该函数。
+
+```swift
+private func someFunction() -> (SomeInternalClass, SomePrivateClass) {
+    // 函数实现
+}
+```
+
+
+
+### 2.3枚举
+
+枚举中成员的访问级别继承自该枚举，你不能为枚举中的成员单独申明不同的访问级别。
+
+```swift
+public enum Student {
+    case Name(String)
+    case Mark(Int,Int,Int)
+}
+```
+
+
+
+### 2.4子类
+
+子类的访问级别不得高于父类的访问级别。
+
+```swift
+public class SuperClass {
+    fileprivate func show() {
+        print("超类")
+    }
+}
+ 
+// 访问级别不能高于超类 public > internal
+internal class SubClass: SuperClass  {
+    override internal func show() {
+        print("子类")
+    }
+}
+```
+
+
+
+### 2.5常量、变量、属性、下标
+
+常量、变量、属性不能拥有比它们的类型更高的访问级别。如果常量、变量、属性、下标索引的定义类型是private级别的，那么它们必须要明确的申明访问级别为private:
+
+```swift
+private var privateInstance = SomePrivateClass()
+```
+
+
+
+### 2.6Getter和Setter
+
+常量、变量、属性、下标索引的Getters和Setters的访问级别继承自它们所属成员的访问级别。Setter的访问级别可以低于对应的Getter的访问级别，这样就可以控制变量、属性或下标索引的读写权限。
+
+```swift
+class Samplepgm {
+    fileprivate var counter: Int = 0{
+        willSet(newTotal){
+            print("计数器: \(newTotal)")
+        }
+        didSet{
+            if counter > oldValue {
+                print("新增加数量 \(counter - oldValue)")
+            }
+        }
+    }
+}
+ 
+let NewCounter = Samplepgm()
+NewCounter.counter = 100
+NewCounter.counter = 800
+```
+
+
+
+### 2.7构造器
+
+我们可以给自定义的初始化方法申明访问级别，但是要不高于它所属类的访问级别。但必要构造器例外，它的访问级别必须和所属类的访问级别相同。如同函数或方法参数，初始化方法参数的访问级别也不能低于初始化方法的访问级别。
+
+Swift为结构体、类都提供了一个默认的无参初始化方法，用于给它们的所有属性提供赋值操作，但不会给出具体值。默认初始化方法的访问级别与所属类型的访问级别相同。
+
+
+
+### 2.8协议
+
+如果想为一个协议明确的申明访问级别，那么需要注意一点，就是你要确保该协议只在你申明的访问级别作用域中使用。如果你定义了一个public访问级别的协议，那么实现该协议提供的必要函数也会是public的访问级别。
+
+### 2.9扩展
+
+扩展成员应该具有和原始类成员一致的访问级别。
+
+### 2.10泛型
+
+泛型类型或泛型函数的访问级别取泛型类型、函数本身、泛型类型参数三者中的最低访问级别。
+
+### 2.11类型别名
+
+一个类型别名的访问级别不可高于原类型的访问级别。
+
+# 十八、可选链
+
+可选链（Optional Chaining）是一种可以请求和调用属性、方法和子脚本的过程，用于请求或调用的目标可能为nil。
+
+可选链返回值：
+
+- 如果目标有值，调用就会成功，返回该值，如果没有返回值则返回`Void`
+- 如果目标为nil，调用将返回nil
+
+通过在属性、方法、或下标脚本的可选值后面放一个问号(?)，即可定义一个可选链。多次请求或调用可以被链接成一个链，如果任意一个节点为nil将导致整条链失效。
+
+| 可选链 '?'                                 | 感叹号（!）强制展开方法，属性，下标脚本可选链          |
+| ------------------------------------------ | ------------------------------------------------------ |
+| ? 放置于可选值后来调用方法，属性，下标脚本 | ! 放置于可选值后来调用方法，属性，下标脚本来强制展开值 |
+| 当可选为 nil 输出比较友好的错误信息        | 当可选为 nil 时强制展开执行错误                        |
+
+```swift
+class Person {
+    var residence: Residence?
+}
+
+class Residence {
+    var numberOfRooms = 1
+}
+
+let john = Person()
+
+// 链接可选residence?属性，如果residence存在则取回numberOfRooms的值
+if let roomCount = john.residence?.numberOfRooms {
+    print("John 的房间号为 \(roomCount)。")
+} else {
+    print("不能查看房间号")
+}
+```
+
+# 十九、扩展
+
+通过扩展来扩充已存在类型( 类，结构体，枚举等)。扩展可以为已存在的类型添加属性，方法，下标脚本，协议等成员。扩展声明使用关键字`extension`。
+
+```swift
+extension SomeType {
+    // 加到SomeType的新功能写到这里
+}
+extension SomeType: SomeProtocol, AnotherProctocol {
+    // 协议实现写到这里
+}
+```
+
+Swift 中的扩展可以：
+
+- 添加计算型属性和计算型静态属性
+- 定义实例方法和类型方法
+- 提供新的构造器
+- 定义下标
+- 定义和使用新的嵌套类型
+- 使一个已有类型符合某个协议
+
+当你扩展一个泛型类型的时候（使用 extension 关键字），你并不需要在扩展的定义中提供类型参数列表。更加方便的是，原始类型定义中声明的类型参数列表在扩展里是可以使用的，并且这些来自原始类型中的参数名称会被用作原始定义中类型参数的引用。
+
+```swift
+struct Stack<Element> {
+    var items = [Element]()
+    mutating func push(_ item: Element) {
+        items.append(item)
+    }
+    mutating func pop() -> Element {
+        return items.removeLast()
+    }
+}
+ 
+extension Stack {
+    var topItem: Element? {
+       return items.isEmpty ? nil : items[items.count - 1]
+    }
+}
+ 
+var stackOfStrings = Stack<String>()
+print("字符串元素入栈: ")
+stackOfStrings.push("google")
+stackOfStrings.push("runoob")
+ 
+if let topItem = stackOfStrings.topItem {
+    print("栈中的顶部元素是：\(topItem).")
+}
+ 
+print(stackOfStrings.items)
+```
+
+# 二十、类型转换
+
+Swift 中类型转换使用 is 和 as 操作符实现，is 用于检测值的类型，as 用于转换类型。类型转换也可以用来检查一个类是否实现了某个协议。
+
+## 1.检查类型
+
+类型检查使用 `is` 关键字。检查一个实例是否属于特定子类型。若实例属于那个子类型，类型检查操作符返回 true，否则返回 false。
+
+```swift
+if item is Chemistry {
+  //statements
+} 
+```
+
+
+
+## 2.向下转型
+
+向下转型，用类型转换操作符(`as?` 或 `as!`)当你不确定向下转型可以成功时，用类型转换的条件形式(`as?`)。条件形式的类型转换总是返回一个可选值（optional value），并且若下转是不可能的，可选值将是 `nil`。只有你可以确定向下转型一定会成功时，才使用强制形式(as!)。当你试图向下转型为一个不正确的类型时，强制形式的类型转换会触发一个运行时错误。
+
+```swift
+// 类型转换的条件形式
+if let show = item as? Chemistry {
+	//statements      
+}
+
+```
+
+
+
+## 3.`Any`和`AnyObject`
+
+Swift为不确定类型提供了两种特殊类型别名：
+
+- `AnyObject`可以代表任何class类型的实例。
+- `Any`可以表示任何类型，包括方法类型（function types）
+
+```swift
+// 可以存储Any类型的数组 exampleany
+var exampleany = [Any]()
+```
+
+```swift
+// [AnyObject] 类型的数组
+let saprint: [AnyObject] = [
+    Chemistry(physics: "固体物理", equations: "赫兹"),
+    Maths(physics: "流体动力学", formulae: "千兆赫"),
+    Chemistry(physics: "热物理学", equations: "分贝"),
+    Maths(physics: "天体物理学", formulae: "兆赫"),
+    Maths(physics: "微分方程", formulae: "余弦级数")]
+```
 
