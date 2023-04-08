@@ -840,6 +840,10 @@ func another(addition: (Int, Int) -> Int, a: Int, b: Int) {
 another(addition: sum, a: 10, b: 20)
 ```
 
+## 6.函数重载
+
+方法名相同,但是参数列表不同. 这样同名不同参的函数之间互相称之为重载函数.
+
 # 十一、闭包
 
 闭包(Closures)是自包含的功能代码块，可以在代码中使用或者用来作为参数传值。Swift 中的闭包与 C 和 Objective-C 中的代码块（blocks）以及其他一些编程语言中的 匿名函数比较相似。Swift中的闭包有很多优化的地方:
@@ -1007,6 +1011,8 @@ Swift 的枚举类似于 Objective C 和 C 的结构，枚举的功能为:
 - 枚举也可以定义构造函数（initializers）来提供一个初始成员值；可以在原始的实现基础上扩展它们的功能。
 - 可以遵守协议（protocols）来提供标准的功能。
 
+### 1.1定义
+
 语法：
 
 ```swift
@@ -1026,9 +1032,34 @@ enum DaysofaWeek {
     case FRIDAY
     case Saturday
 }
+enum Season {
+    case spring,summer,autumn,winter
+}
+```
+
+### 1.2 关联值
+
+Swift中的枚举可以存储任意确定类型的关联值，这些值被称为枚举关联值。
+
+```swift
+enum Code{
+    case num(Int,Int,Int)
+    case str(String,String)
+}
+var code = Code.num(2, 3, 3)
+code =  .str("A", "B")
+
+switch code {
+case .num(let num1, let num2, let num3):
+    print("\(num1),\(num2),\(num3)")
+case .str(let str1, let str2):
+    print("\(str1),\(str2)")
+}
 ```
 
 
+
+### 1.3原始值
 
 枚举的原始值可以是字符串，字符，或者任何整型值或浮点型值。每个原始值在它的枚举声明中必须是唯一的。在原始值为整数的枚举时，不需要显式的为每一个成员赋值，Swift会自动为你赋值。
 
@@ -1042,6 +1073,8 @@ print("数字月份为: \(yearMonth)。")
 ```
 
 
+
+***注意: 原始值和关联值是不同的。原始值是在定义枚举时被预先填充的值。对于一个特定的枚举成员，它的原始值始终不变。关联值是创建一个基于枚举成员的常量或变量时才设置的值，枚举成员的关联值可以变化。***
 
 ## 2.结构体
 
@@ -1494,7 +1527,7 @@ struct Rect {
 
 
 
-### 7.5类继承和构造过程
+### 7.5类的构造过程
 
 Swift 提供了两种类型的类构造器来确保所有类实例中存储型属性都能获得初始值，它们分别是指定构造器和便利构造器。
 
@@ -2241,6 +2274,8 @@ for object in objects {
 }
 ```
 
+
+
 # 十六、泛型
 
 Swift 提供了泛型让你写出灵活且可重用的函数和类型。泛型使用了占位类型名（在这里用字母 T 来表示）来代替实际类型名。
@@ -2451,10 +2486,13 @@ Swift 为代码中的实体提供了四种不同的访问级别，按级别从�
 
 | 访问级别    | 定义                                                         |
 | :---------- | :----------------------------------------------------------- |
-| public      | 可以访问自己模块中源文件里的任何实体，别人也可以通过引入该模块来访问源文件里的所有实体。 |
-| internal    | 可以访问自己模块中源文件里的任何实体，但是别人不能访问该模块中源文件里的实体。（默认） |
+| `Open`      | 所修饰的属性或方法在源代码所在的整个模块都可以访问。只能作用于类和类的成员，可以被任何人使用，包括重写和继承 |
+| public      | 可以被任何人使用。但其他模块中不可以被重写和继承，而在本模块内可以被重写和继承 |
+| internal    | 所修饰的属性或方法在源代码所在的整个模块都可以访问。如果是框架或者库代码，则在整个框架内部都可以访问，框架由外部代码所引用时，则不可以访问。如果是App代码，也是在整个App代码，也是在整个App内部可以访问（默认） |
 | fileprivate | 文件内私有，只能在当前源文件中使用。                         |
-| private     | 只能在类中访问，离开了这个类或者结构体的作用域外面就无法访问。 |
+| private     | 所修饰的属性或者方法只能在当前类里访问                       |
+
+
 
 模块指的是以独立单元构建和发布的 Framework 或 Application。在 Swift 中的一个模块可以使用 `import` 关键字引入另外一个模块。源文件是单个源码文件，它通常属于一个模块， 源文件可以包含多个类和函数 的定义。
 
@@ -2627,6 +2665,7 @@ Swift 中的扩展可以：
 - 定义下标
 - 定义和使用新的嵌套类型
 - 使一个已有类型符合某个协议
+- 扩展一个协议，为可选方法提供实现
 
 当你扩展一个泛型类型的时候（使用 extension 关键字），你并不需要在扩展的定义中提供类型参数列表。更加方便的是，原始类型定义中声明的类型参数列表在扩展里是可以使用的，并且这些来自原始类型中的参数名称会被用作原始定义中类型参数的引用。
 
@@ -2658,6 +2697,41 @@ if let topItem = stackOfStrings.topItem {
  
 print(stackOfStrings.items)
 ```
+
+```swift
+protocol OptionalProtocol {
+    func optionalMethod()        // 可选
+    func necessaryMethod()       // 必须
+    func anotherOptionalMethod() // 可选
+}
+
+extension OptionalProtocol {
+    func optionalMethod() {
+        print("Implemented in extension")
+    }
+
+    func anotherOptionalMethod() {
+        print("Implemented in extension")
+    }
+}
+
+class MyClass: OptionalProtocol {
+    func necessaryMethod() {
+        print("Implemented in Class3")
+    }
+
+    func optionalMethod() {
+        print("Implemented in Class3")
+    }
+}
+
+let obj = MyClass()
+obj.necessaryMethod() // Implemented in Class3
+obj.optionalMethod()  // Implemented in Class3
+obj.anotherOptionalMethod() // Implemented in extension
+```
+
+
 
 # 二十、类型转换
 
