@@ -568,7 +568,59 @@ print(tuple.age)
 print(tuple.name)
 ```
 
-# 九、字典
+# 九、集合（Set）
+
+集合是无序且元素不能重复，当元素顺序不重要切元素值要保证唯一的时候可以使用集合。一个类型必须是可散列的，才能存储在一个集合中——也就是说，该类型必须提供一种为自己计算散列值的方法。 散列值是一个Int值，对于相等比较的所有对象都相同，因此如果 a == b，则 a 的散列值等于 b 的散列值。
+
+## 1.创建集合
+
+```swift
+var setA:Set = [1,2,3,4,5]
+var setB: Set<String> = ["字", "面", "量"]
+var setC:Set = Set<Element: Hashable>()
+```
+
+## 2.集合操作
+
+* 交集
+
+  ```swift
+  var A:Set = [1,2,3,4,5]
+  var B:Set = [5,6,7,8,9]
+  print(A.intersection(B)) //[5]
+  ```
+
+  
+
+* 对称差集
+
+  ```swift
+  var A:Set = [1,2,3,4,5]
+  var B:Set = [5,6,7,8,9]
+  print(A.symmetricDifference(B)) //[1, 4, 3, 9, 8, 7, 6, 2]
+  ```
+
+  
+
+* 并集
+
+  ```swift
+  var A:Set = [1,2,3,4,5]
+  var B:Set = [5,6,7,8,9]
+  print(A.union(B)) //[4, 9, 7, 3, 6, 8, 1, 5, 2]
+  ```
+
+  
+
+* 差集
+
+  ```swift
+  var A:Set = [1,2,3,4,5]
+  var B:Set = [5,6,7,8,9]
+  print(A.subtracting(B)) //[1, 2, 3, 4]
+  ```
+
+# 十、字典
 
 Swift 字典用来存储无序的相同类型数据的集合，Swift 字典会强制检测元素的类型，如果类型不同则会报错。Swift 字典每个值（value）都关联唯一的键（key），键作为字典中的这个值数据的标识符。如果创建一个字典，并赋值给一个变量，则创建的字典就是可以修改的。这意味着在创建字典后，可以通过添加、删除、修改的方式改变字典里的项目。如果将一个字典赋值给常量，字典就不可修改，并且字典的大小和内容都不可以修改。
 
@@ -715,7 +767,7 @@ print("someDict2 = \(someDict2.isEmpty)")
 print("someDict3 = \(someDict3.isEmpty)")
 ```
 
-# 十、函数
+# 十一、函数
 
 ## 1.函数定义
 
@@ -844,7 +896,7 @@ another(addition: sum, a: 10, b: 20)
 
 方法名相同,但是参数列表不同. 这样同名不同参的函数之间互相称之为重载函数.
 
-# 十一、闭包
+# 十二、闭包
 
 闭包(Closures)是自包含的功能代码块，可以在代码中使用或者用来作为参数传值。Swift 中的闭包与 C 和 Objective-C 中的代码块（blocks）以及其他一些编程语言中的 匿名函数比较相似。Swift中的闭包有很多优化的地方:
 
@@ -999,7 +1051,7 @@ func serve(element elementProvider: @autoclosure () -> String) {
 serve(element: dataArr.remove(at: 0))
 ```
 
-# 十二、枚举、结构体和类
+# 十三、枚举、结构体和类
 
 ## 1.枚举
 
@@ -1654,7 +1706,7 @@ show = nil
 print(counter)
 ```
 
-# 十三、继承
+# 十四、继承
 
 当一个类继承其它类时，继承类叫子类，被继承类叫超类（或父类)。在 Swift 中，子类可以调用和访问超类的方法，属性和下标脚本，并且可以重写它们，也可以为类中继承来的属性添加属性观察器。没有继承其它类的类，称之为基类（Base Class）。
 
@@ -1790,7 +1842,7 @@ sq.radius = 100.0
 print("半径: \(sq.area)")
 ```
 
-# 十四、自动引用计数（ARC）
+# 十五、自动引用计数（ARC）
 
 Swift 使用自动引用计数（ARC）这一机制来跟踪和管理应用程序的内存通常情况下我们不需要去手动释放内存，因为 ARC 会在类的实例不再被使用时，自动释放其占用的内存。
 
@@ -2016,7 +2068,7 @@ print(paragraph!.asHTML())
 paragraph = nil
 ```
 
-# 十五、协议
+# 十六、协议
 
 协议规定了用来实现某一特定功能所必需的方法和属性。任意能够满足协议要求的类型被称为遵循(conform)这个协议。类、结构体或枚举类型都可以遵循协议，并提供具体实现来完成协议定义的方法和功能。
 
@@ -2276,7 +2328,7 @@ for object in objects {
 
 
 
-# 十六、泛型
+# 十七、泛型
 
 Swift 提供了泛型让你写出灵活且可重用的函数和类型。泛型使用了占位类型名（在这里用字母 T 来表示）来代替实际类型名。
 
@@ -2476,7 +2528,7 @@ if allItemsMatch(tos, aos) {
 }
 ```
 
-# 十七、访问控制
+# 十八、访问控制
 
 访问控制可以限定其他源文件或模块中代码对你代码的访问级别。可以明确地给单个类型（类、结构体、枚举）设置访问级别，也可以给这些类型的属性、函数、初始化方法、基本类型、下标索引等设置访问级别。协议也可以被限定在一定的范围内使用，包括协议里的全局常量、变量和函数。
 
@@ -2609,7 +2661,7 @@ Swift为结构体、类都提供了一个默认的无参初始化方法，用于
 
 一个类型别名的访问级别不可高于原类型的访问级别。
 
-# 十八、可选链
+# 十九、可选链
 
 可选链（Optional Chaining）是一种可以请求和调用属性、方法和子脚本的过程，用于请求或调用的目标可能为nil。
 
@@ -2644,7 +2696,7 @@ if let roomCount = john.residence?.numberOfRooms {
 }
 ```
 
-# 十九、扩展
+# 二十、扩展
 
 通过扩展来扩充已存在类型( 类，结构体，枚举等)。扩展可以为已存在的类型添加属性，方法，下标脚本，协议等成员。扩展声明使用关键字`extension`。
 
@@ -2733,7 +2785,7 @@ obj.anotherOptionalMethod() // Implemented in extension
 
 
 
-# 二十、类型转换
+# 二十一、类型转换
 
 Swift 中类型转换使用 is 和 as 操作符实现，is 用于检测值的类型，as 用于转换类型。类型转换也可以用来检查一个类是否实现了某个协议。
 
@@ -2785,3 +2837,69 @@ let saprint: [AnyObject] = [
     Maths(physics: "微分方程", formulae: "余弦级数")]
 ```
 
+
+
+# 二十二、在`Swift`中调用`OC`
+
+
+
+## 1.在Swift Project中调用OC
+
+* 创建`bridging-header.h`和配置
+
+  创建`bridging-header.h`文件并在`Targets >Swift Compiler-General >Objective-C Bridging Header`中配置`bridging-header.h`路径。
+
+* 在桥接文件中引入需要调用的Objective-C类声明文件
+
+  ```swift
+  #import "Cat.h"
+  ```
+
+  
+
+* 然后在Swift里就可以直接使用了
+
+  ```swift
+  class Dog: NSObject {
+      @objc var friend = Cat()
+      func friendEatAction() {
+          friend.eat();
+      }
+  }
+  ```
+
+  
+
+## 2.在Swift Project中调用OC Pod
+
+* 创建`bridging-header.h`和配置
+
+  创建`bridging-header.h`文件并在`Targets >Swift Compiler-General >Objective-C Bridging Header`中配置`bridging-header.h`路径。
+
+* 在桥接文件中引入需要调用的Objective-C pod中的类声明文件
+
+  ```swift
+  #import <OCPodxxx/Cat.h>
+  ```
+
+  
+
+* 然后在Swift里就可以直接使用了
+
+  ```swift
+  import UIKit
+  
+  class ViewController: UIViewController {
+      let cat = Cat()   // Cat是OC类
+      override func viewDidLoad() {
+          super.viewDidLoad()
+          cat.eat()       // 是OC对象的方法
+      }
+  }
+  ```
+
+
+
+## 3.在Swift Pod中调用OC Pod
+
+在podfile里把`use_frameworks!`改为`use_modular_headers!`，这样就可以使用`import` 方式引用pod，`import` 方式同时兼容OC和Swift。此时在Swift Pod的umbrella header里添加`#import "<xxPod/xx.h>"`，就可以成功使用`<xxPod/xx.h>`接口并且通过编译。。
