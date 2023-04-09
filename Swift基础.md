@@ -2839,7 +2839,7 @@ let saprint: [AnyObject] = [
 
 
 
-# 二十二、在`Swift`中调用`OC`
+# 二十二、Swift`和`OC`相互调用
 
 
 
@@ -2903,3 +2903,11 @@ let saprint: [AnyObject] = [
 ## 3.在Swift Pod中调用OC Pod
 
 在podfile里把`use_frameworks!`改为`use_modular_headers!`，这样就可以使用`import` 方式引用pod，`import` 方式同时兼容OC和Swift。此时在Swift Pod的umbrella header里添加`#import "<xxPod/xx.h>"`，就可以成功使用`<xxPod/xx.h>`接口并且通过编译。。
+
+
+
+## 4.在`OC`中调用`swift`
+
+* Swift如果需要被OC调用,需要使用@objc 对方法或者属性进行修饰
+* 在`OC`中导入 `Target-Swift.h`文件
+
